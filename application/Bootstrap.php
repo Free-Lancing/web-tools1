@@ -5,24 +5,33 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
     protected function _initAutoload() {
         $this->bootstrap('frontcontroller');
         $router = $this->frontController->getRouter();
-        $myRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini');
+        
         $uri = ltrim($_SERVER["REQUEST_URI"], "/");
-        $currentModule = substr($uri, 0, strpos($uri, "/"));
-        
-        switch ($currentModule) {
-            case 'social':
-                $myRoutes1 = $myRoutes->social_network;
-                break;
-            
-            case 'login':
-                $myRoutes1 = $myRoutes->login;
-                break;
+        $uriArray = explode('/', $uri);
+        $routes = null;
+        $uriMatched = false;
+        $myRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini');
 
-            default:
-                $myRoutes1 = $myRoutes->error;
-                break;
+        if ((!empty($myRoutes)) && (!empty($myRoutes->{$uriArray[0]})) && (!empty($myRoutes->{$uriArray[0]}->routes->{$uriArray[1]}))) {
+            // routing.ini file found and not empty, current node found, sub node found
+            $uriMatched = $this->checkMatchingUri($uri, $myRoutes->{$uriArray[0]}->routes->{$uriArray[1]}->route);
+
+            if ($uriMatched) {
+                // urls are matching and as per the set up in the routing.ini
+                $routes = $myRoutes->{$uriArray[0]};
+            }
         }
-        
-        $router->addConfig($myRoutes1, 'routes');
+
+        if ($routes === null) {
+            $routes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini', 'error');
+        }
+
+        $router->addConfig($routes, 'routes');
     }
+
+    public function checkMatchingUri($uri, $checkUri) {
+        // with multiple params /:username/:password & normal without any params
+        return (count(array_values(array_filter(explode('/', $checkUri)))) === count(array_values(array_filter(explode('/', $uri)))));
+    }
+
 }
