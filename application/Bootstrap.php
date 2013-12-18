@@ -11,7 +11,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $routes = null;
         $uriMatched = false;
         $myRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini');
-        $loggedIn = false; // This needs to be changed once authentication is done
 
         if((!empty($myRoutes)) && (!empty($myRoutes->{$uriArray[0]})) && (!empty($myRoutes->{$uriArray[0]}->routes->{$uriArray[1]}))) {
             // routing.ini file found and not empty, current node found, sub node found
@@ -24,6 +23,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         }
 
         /* Use this only if your require to redirect to error if invalid url and redirect to home page if just url specified without any controller or action
+            $loggedIn = false; // This needs to be changed once authentication is done
          * if(($routes === null) && (!empty($myRoutes)) && (empty($myRoutes->{$uriArray[0]}))) {
             // No controller is specified, hence redirect to default controller
             if($loggedIn) {
