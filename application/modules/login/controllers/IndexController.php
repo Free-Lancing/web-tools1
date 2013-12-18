@@ -3,7 +3,7 @@
 class IndexController extends Zend_Controller_Action {
 
     /**
-     * @url : http://web-tools.local/login/rachit/password
+     * @url : http://web-tools.local/login/user/rachit/password
      */
     public function indexAction() {
         $request = $this->getRequest();
