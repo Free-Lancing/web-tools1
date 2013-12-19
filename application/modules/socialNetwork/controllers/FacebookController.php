@@ -3,11 +3,10 @@
 class SocialNetwork_FacebookController extends Zend_Controller_Action {
 
     /**
-     * @url http://web-tools.local/social/fb_like
+     * @url http://web-tools.local/social/facebook_like
      */
     public function likeAction() {
-        echo 'like action - facebook';
-        exit;
+        echo '<br />like action - facebook';
     }
 
 }
