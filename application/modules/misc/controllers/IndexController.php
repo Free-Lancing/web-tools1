@@ -1,12 +1,12 @@
 <?php
 
-class SocialNetwork_FacebookController extends Zend_Controller_Action {
+class Misc_IndexController extends Zend_Controller_Action {
 
     /**
-     * @url http://web-tools.local/social/facebook_like
+     * @url http://web-tools.local/misc/send_mail
      */
-    public function likeAction() {
-        echo '<br />like action - facebook';
+    public function sendMailAction() {
+        echo '<br />send Mail action - Misc';
     }
 
 }

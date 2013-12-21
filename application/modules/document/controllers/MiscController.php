@@ -1,13 +1,13 @@
 <?php
 
-class SocialNetwork_LinkedinController extends Zend_Controller_Action {
+class Document_MiscController extends Zend_Controller_Action {
 
     /**
-     * @url http://web-tools.local/social/linkedin_follow
+     * @url http://web-tools.local/doc/print
      */
-    public function followAction() {
+    public function printAction() {
+        echo '<br />Misc Print action - Document';
     }
-
 }
 
 ?>
