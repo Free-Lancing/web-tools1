@@ -159,7 +159,7 @@ class Zend_Controller_Router_Rewrite extends Zend_Controller_Router_Abstract
      * @throws Zend_Controller_Router_Exception
      * @return Zend_Controller_Router_Rewrite
      */
-    public function addConfig(Zend_Config $config, $section = null)
+    public function addConfig(Zend_Config $config, $section = null, $subSection = null)
     {
         if ($section !== null) {
             if ($config->{$section} === null) {
@@ -170,6 +170,35 @@ class Zend_Controller_Router_Rewrite extends Zend_Controller_Router_Abstract
             $config = $config->{$section};
         }
 
+        if ($subSection !== null) {
+            $route = $this->_getRouteFromConfig($config->{$subSection});
+            
+            if ($route instanceof Zend_Controller_Router_Route_Chain) {
+                if (!isset($info->chain)) {
+                    require_once 'Zend/Controller/Router/Exception.php';
+                    throw new Zend_Controller_Router_Exception("No chain defined");
+                }
+
+                if ($info->chain instanceof Zend_Config) {
+                    $childRouteNames = $info->chain;
+                } else {
+                    $childRouteNames = explode(',', $info->chain);
+                }
+
+                foreach ($childRouteNames as $childRouteName) {
+                    $childRoute = $this->getRoute(trim($childRouteName));
+                    $route->chain($childRoute);
+                }
+
+                $this->addRoute($subSection, $route);
+            } elseif (isset($info->chains) && $info->chains instanceof Zend_Config) {
+                $this->_addChainRoutesFromConfig($subSection, $route, $info->chains);
+            } else {
+                $this->addRoute($subSection, $route);
+            }
+            return $this;
+        }
+        
         foreach ($config as $name => $info) {
             $route = $this->_getRouteFromConfig($info);
 

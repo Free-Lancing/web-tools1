@@ -38,7 +38,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             $routes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini', 'error');
         }
 
-        $router->addConfig($routes, 'routes');
+        $router->addConfig($routes, 'routes', $uriArray[1]);
     }
 
     public function checkMatchingUri($uri, $checkUri) {
