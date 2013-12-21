@@ -36,6 +36,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         if(($routes === null)) {
             // Invalid controller
             $routes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routing.ini', 'error');
+            $uriArray[1] = null;
         }
 
         $router->addConfig($routes, 'routes', $uriArray[1]);
